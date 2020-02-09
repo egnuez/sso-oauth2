@@ -1,0 +1,30 @@
+<html>
+    <head>
+    
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="icon" href="favicon.ico">
+    
+        <title>SSO</title>
+
+        {% load bootstrap4 %}
+        {% bootstrap_css %}
+        {% bootstrap_javascript jquery='full' %}
+ 
+    </head>
+    <body>
+        <form action="/users/login/" method="GET">
+            <h2 class="text-center">Authorization Server</h2>
+            <p class="text-center">Usuario: <input type="text" name="username" /></p>
+            <p class="text-center">Password: <input type="text" name="password" /></p>
+            <p class="text-center">response_type: <input type="text" name="response_type" value = "{{response_type}}"/></p>
+            <p class="text-center">client_id: <input type="text" name="client_id" value = "{{client_id}}"/></p>
+            <p class="text-center">redirect_uri: <input type="text" name="redirect_uri" value = "{{redirect_uri}}"/></p>
+            <p class="text-center">state: <input type="text" name="state" value = "{{state}}"/></p>
+            <p class="text-center">scope: <input type="text" name="scope" value = "{{scope}}"/></p>
+            <p class="text-center"><button type="submit" class="btn btn-success">Login</button></p>
+        </form>
+    </body>
+</html>

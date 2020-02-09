@@ -1,0 +1,23 @@
+<html>
+    <head>
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="icon" href="favicon.ico">
+
+        <title>Como integrar Django y Bootstrap 4 </title>
+
+        {% load bootstrap4 %}
+        {% bootstrap_css %}
+        {% bootstrap_javascript jquery='full' %}
+
+    </head>
+    <body>
+        <a href="/users/logout">logout</a>
+        <h2 class="text-center">{{app.name}} want to access to your account <h2>
+        <p class="text-center"><a href="{% url 'authorize' %}?response_type={{response_type}}&client_id={{client_id}}&redirect_uri={{redirect_uri}}&state={{state}}&scope={{scope}}" class="btn btn-info" role="button">Authorize</a></p>
+        <p class="text-center"><button type="submit" class="btn btn-warning">Deny</button></p>
+    </body>
+</html>

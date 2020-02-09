@@ -1,0 +1,28 @@
+<html>
+    <head>
+    
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="icon" href="favicon.ico">
+    
+        <title>SSO - App 2</title>
+
+        {% load bootstrap4 %}
+        {% bootstrap_css %}
+        {% bootstrap_javascript jquery='full' %}
+ 
+    </head>
+    <body>
+        <form action="/users/auth" method="GET">
+            <h2 class="text-center">Application Two</h2>
+            <input type="hidden" name="response_type" value = "code">
+            <input type="hidden" name="client_id" value = "2">
+            <input type="hidden" name="redirect_uri" value = "http://127.0.0.1:8000/app2/auth_landing_page">
+            <input type="hidden" name="state" value = "qwer0987">
+            <input type="hidden" name="scope" value = "all">
+            <p class="text-center"><button type="submit" class="btn btn-success">Login</button></p>
+        </form>
+    </body>
+</html>
