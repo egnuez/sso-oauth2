@@ -1,30 +1,78 @@
+{% load static %}
 <html>
     <head>
-    
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="">
         <meta name="author" content="">
         <link rel="icon" href="favicon.ico">
-    
         <title>SSO</title>
-
-        {% load bootstrap4 %}
-        {% bootstrap_css %}
-        {% bootstrap_javascript jquery='full' %}
- 
+        <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
     </head>
     <body>
+        <!--
         <form action="/users/login/" method="GET">
             <h2 class="text-center">Authorization Server</h2>
             <p class="text-center">Usuario: <input type="text" name="username" /></p>
             <p class="text-center">Password: <input type="text" name="password" /></p>
-            <p class="text-center">response_type: <input type="text" name="response_type" value = "{{response_type}}"/></p>
-            <p class="text-center">client_id: <input type="text" name="client_id" value = "{{client_id}}"/></p>
-            <p class="text-center">redirect_uri: <input type="text" name="redirect_uri" value = "{{redirect_uri}}"/></p>
-            <p class="text-center">state: <input type="text" name="state" value = "{{state}}"/></p>
-            <p class="text-center">scope: <input type="text" name="scope" value = "{{scope}}"/></p>
+            <input type="hidden" name="response_type" value = "{{response_type}}"/>
+            <input type="hidden" name="client_id" value = "{{client_id}}"/>
+            <input type="hidden" name="redirect_uri" value = "{{redirect_uri}}"/>
+            <input type="hidden" name="state" value = "{{state}}"/>
+            <input type="hidden" name="scope" value = "{{scope}}"/>
             <p class="text-center"><button type="submit" class="btn btn-success">Login</button></p>
         </form>
+        -->
+        <div class="container">
+            <div class="d-flex justify-content-center h-100">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Single Sign On Authentication Server</h3>
+                        <div class="d-flex justify-content-end social_icon">
+                            <span><i class="fab fa-facebook-square"></i></span>
+                            <span><i class="fab fa-google-plus-square"></i></span>
+                            <span><i class="fab fa-twitter-square"></i></span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form action="/users/login/" method="GET">
+                            <div class="input-group form-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                </div>
+                                <input type="text" class="form-control" placeholder="username" name="username">
+                                
+                            </div>
+                            <div class="input-group form-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-key"></i></span>
+                                </div>
+                                <input type="password" class="form-control" placeholder="password" name="password">
+                            </div>
+                            <div class="row align-items-center remember">
+                                <input type="checkbox">Remember Me
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="Login" class="btn float-right login_btn">
+                            </div>
+                            <input type="hidden" name="response_type" value = "{{response_type}}"/>
+                            <input type="hidden" name="client_id" value = "{{client_id}}"/>
+                            <input type="hidden" name="redirect_uri" value = "{{redirect_uri}}"/>
+                            <input type="hidden" name="state" value = "{{state}}"/>
+                            <input type="hidden" name="scope" value = "{{scope}}"/>
+                        </form>
+                    </div>
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-center links">
+                            Don't have an account?<a href="#">Sign Up</a>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <a href="#">Forgot your password?</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
