@@ -8,17 +8,60 @@
         <link rel="icon" href="favicon.ico">
         <title>SSO - App 1</title>
         <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+        <style>
+        html,body{
+            background-image: url("{% static 'img/app1.jpg'' %}");
+           
+            background-repeat: no-repeat;
+            font-family: 'Numans', sans-serif;
+        }
+        </style>
     </head>
     <body>
-        <form action="/users/auth" method="GET">
-            <h2 class="text-center">Application One</h2>
-            <input type="hidden" name="response_type" value = "code">
-            <input type="hidden" name="client_id" value = "1">
-            <input type="hidden" name="redirect_uri" value = "http://127.0.0.1:8000/app1/auth_landing_page">
-            <input type="hidden" name="state" value = "asdf1234">
-            <input type="hidden" name="scope" value = "all">
-            <p class="text-center"><button type="submit" class="btn btn-success">Login</button></p>
-        </form>
-        <img src="{% static 'img/app1.jpg' %}" alt="My image" />
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">App1</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+          
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                  <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Dropdown
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                  </div>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link disabled" href="#">Disabled</a>
+                </li>
+              </ul>
+              <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+              </form>
+            </div>
+        </nav>
+        <div class="container mt-3">
+            <form action="/users/auth" method="GET">
+                <input type="hidden" name="response_type" value = "code">
+                <input type="hidden" name="client_id" value = "1">
+                <input type="hidden" name="redirect_uri" value = "http://127.0.0.1:8000/app1/auth_landing_page">
+                <input type="hidden" name="state" value = "asdf1234">
+                <input type="hidden" name="scope" value = "all">
+                <p class="text-center"><button type="submit" class="btn btn-success">Login</button></p>
+            </form>
+        </div>
     </body>
 </html>
