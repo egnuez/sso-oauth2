@@ -6,6 +6,10 @@ from django.utils.text import slugify
 class Apps(models.Model):
     name = models.CharField(max_length=64)
 
+class Resources(models.Model):
+    name = models.CharField(max_length=64)
+    app = models.ManyToManyField(Apps)
+
 class Users(models.Model):
     username = models.CharField(max_length=64)
     password = models.CharField(max_length=64)
