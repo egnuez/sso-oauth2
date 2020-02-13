@@ -3,7 +3,7 @@ from django.http import JsonResponse, HttpResponse
 import datetime
 import jwt
 
-from .models import Apps, Users
+from .models import Apps, Users, Resources
 
 # Create your views here.
 
@@ -50,14 +50,33 @@ def auth(request):
     redirect_uri = request.GET['redirect_uri']
     state = request.GET['state']
     scope = request.GET['scope']
+    resource_id = request.GET['resource_id']
 
     if 'user' in request.session:
+        
         try:
+
             app = Apps.objects.get(id = client_id)
+            resource = Resources.objects.get(id = resource_id)
+
+            if not Users.objects.filter(id=app.id).exists():
+                return render(request, "error.html", {
+                    "error": "El usuario no tiene permisos para esta operacion"
+                })
+
+            if not Resources.objects.filter(id=app.id).exists():
+                return render(request, "error.html", {
+                    "error": "La app no tiene permisos para esta operacion"
+                })
+
             return render(request, "permisions.html", {
                 "app":{
                     "id": app.id,
                     "name": app.name,
+                },
+                "resource":{
+                    "id": resource.id,
+                    "name": resource.name,
                 },
                 "user": request.session['user'],
                 "response_type": response_type,
@@ -65,19 +84,25 @@ def auth(request):
                 "redirect_uri": redirect_uri,
                 "state": state,
                 "scope": scope,
+                "resource_id":resource_id,
             })
+
         except Apps.DoesNotExist:
-            return render(request, "app_does_not_exist.html", {
-                "client_id": client_id
+            return render(request, "error.html", {
+                "error": "La App solicitada no existe"
             })
-    else:
-        return render(request, "login.html", {
-            "response_type": response_type,
-            "client_id": client_id,
-            "redirect_uri": redirect_uri,
-            "state": state,
-            "scope": scope,
-        })
+        except Resources.DoesNotExist:
+            return render(request, "error.html", {
+                "error": "El Recurso solicitado no existe"
+            })
+    
+    return render(request, "login.html", {
+        "response_type": response_type,
+        "client_id": client_id,
+        "redirect_uri": redirect_uri,
+        "state": state,
+        "scope": scope,
+    })
 
 def authorize(request):
     
@@ -86,6 +111,7 @@ def authorize(request):
     redirect_uri = request.GET['redirect_uri']
     state = request.GET['state']
     scope = request.GET['scope']
+    resource_id = request.GET['resource_id']
 
     code = jwt.encode({
         'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=30),
