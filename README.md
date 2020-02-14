@@ -3,42 +3,70 @@
 Single Sign On using oAuth2 & JWT
 The project constist of 3 apps:
 
-## Authorization Server
+This application has a users database and a login form to validate them. It implements oAuth2 server service auth:
 
-This application has a users database and and a login form to validate them. It implements oAuth2 server service auth:
-
-Ask for permissions
-
-```
-http://127.0.0.1:8000/users/auth/
-?response_type=code
-&client_id=1
-&redirect_uri=http://127.0.0.1:8000/app1/auth_landing_page
-&state=asdf1234
-&scope=all
-```
-
-Get code and redirect the browser to redirect_uri
+**Ask for permissions using "code"**
 
 ```
 http://127.0.0.1:8000/users/authorize/
 ?response_type=code
-&client_id=1
+&client_id=765
+&resource_id=432
 &redirect_uri=http://127.0.0.1:8000/app1/auth_landing_page
 &state=asdf1234
 &scope=all
+```
+
+Independent applications uses the Authorization Server to validate its users.
+Once the user has validated with username and password, it will be redirected to:
+
+```
+http://127.0.0.1:8000/app1/auth_landing_page
+?code=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+&state=asdf1234
 
 ```
 
-## Application 1 and Application 2 
+Get final token:
 
-Independent applications that uses the Authorization Server to validate its users.
+```
+/token
+?client_id=765
+?client_secret=xyz
+?code=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+Response
+```
+HTTP/1.1 200 OK
+Content-Type: application/json
+{
+   "access_token" : "asdasdfasdadfadf...",
+   "token_type" : "Bearer",
+   "expires_in" : 3600,
+   "scope" : "all"
+}
+```
+
+
+ **Ask for permissions using "token"**
+
+```
+http://127.0.0.1:8000/users/authorize/
+?response_type=token
+&client_id=765
+&resource_id=432
+&redirect_uri=http://127.0.0.1:8000/app1/auth_landing_page
+&state=asdf1234
+&scope=all
+```
 
 Redirect URI:
 
 ```
 http://127.0.0.1:8000/app1/auth_landing_page
-?code=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-&state=yyyyyy
+?access_token=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+&expire_in=3600
+&state=asdf1234
 
 ```

@@ -16,8 +16,8 @@
     </head>
     <body>
         <a href="/users/logout">logout</a>
-        <h2 class="text-center">{{app.name}} want to access to your account <h2>
-        <p class="text-center"><a href="{% url 'authorize' %}?response_type={{response_type}}&client_id={{client_id}}&redirect_uri={{redirect_uri}}&state={{state}}&scope={{scope}}" class="btn btn-info" role="button">Authorize</a></p>
+        <h2 class="text-center">{{user.username}}: {{app.name}} application wants to access to {{resource.name}} in your name, do you accept?<h2>
+        <p class="text-center"><a href="{% url 'authorize' %}?response_type={{response_type}}&client_id={{client_id}}&resource_id={{resource_id}}&redirect_uri={{redirect_uri}}&state={{state}}&scope={{scope}}&granted=yes" class="btn btn-info" role="button">Authorize</a></p>
         <p class="text-center"><button type="submit" class="btn btn-warning">Deny</button></p>
     </body>
 </html>

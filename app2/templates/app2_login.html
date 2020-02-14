@@ -54,9 +54,10 @@
             </div>
         </nav>
         <div class="container mt-3">
-            <form action="/users/auth" method="GET">
+            <form action="/users/authorize" method="GET">
                 <input type="hidden" name="response_type" value = "code">
                 <input type="hidden" name="client_id" value = "2">
+                <input type="hidden" name="resource_id" value = "1">
                 <input type="hidden" name="redirect_uri" value = "http://127.0.0.1:8000/app2/auth_landing_page">
                 <input type="hidden" name="state" value = "qwer0987">
                 <input type="hidden" name="scope" value = "all">

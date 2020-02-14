@@ -1,6 +1,6 @@
 from django.test import TestCase, SimpleTestCase, Client
 from django.urls import resolve, reverse
-from users.views import login, logout, auth
+from users.views import login, logout, authorize
 from users.models import Users, Apps, Resources
 
 # Create your tests here.
@@ -15,9 +15,9 @@ class TestUrls(TestCase):
         url = reverse("logout")
         self.assertEquals(resolve(url).func, logout)
 
-    def test_auth_url_is_resolved(self):
-        url = reverse("auth")
-        self.assertEquals(resolve(url).func, auth)
+    def test_authorize_url_is_resolved(self):
+        url = reverse("authorize")
+        self.assertEquals(resolve(url).func, authorize)
 
 class TestViews(TestCase):
 
@@ -64,7 +64,7 @@ class TestViews(TestCase):
         response = client.get(reverse("logout"))
         self.assertEquals(response.status_code, 200)
 
-    def test_auth_to_permisions(self):
+    def test_authorize_to_permisions(self):
 
         user = Users.objects.create(
             username = "user_test",
@@ -103,7 +103,7 @@ class TestViews(TestCase):
         })
         self.assertEquals(response.status_code, 302)
         
-        response = client.get(reverse("auth"), {
+        response = client.get(reverse("authorize"), {
             'response_type': 'code',
             'client_id': 1,
             'resource_id': 1,
@@ -115,10 +115,10 @@ class TestViews(TestCase):
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed('permisions.html')
 
-    def test_auth_to_login(self):
+    def test_authorize_to_login(self):
         
         client = Client()
-        response = client.get(reverse("auth"), {
+        response = client.get(reverse("authorize"), {
             'response_type': 'code',
             'client_id': 1,
             'resource_id': 1,
@@ -130,7 +130,7 @@ class TestViews(TestCase):
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed('login.html')
 
-    def test_auth_to_app_does_not_exist(self):
+    def test_authorize_to_app_does_not_exist(self):
 
         Users.objects.create(
             username = "user_test",
@@ -149,7 +149,7 @@ class TestViews(TestCase):
         })
         self.assertEquals(response.status_code, 302)
         
-        response = client.get(reverse("auth"), {
+        response = client.get(reverse("authorize"), {
             'response_type': 'code',
             'client_id': 2,
             'resource_id': 1,
