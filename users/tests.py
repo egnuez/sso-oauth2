@@ -1,7 +1,8 @@
 from django.test import TestCase, SimpleTestCase, Client
 from django.urls import resolve, reverse
-from users.views import login, logout, authorize
+from users.views import login, logout, authorize, token
 from users.models import Users, Apps, Resources
+from urllib.parse import urlparse, parse_qs
 
 # Create your tests here.
 
@@ -160,6 +161,67 @@ class TestViews(TestCase):
 
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed('error.html')
+
+    def test_authorize_and_get_token(self):
+
+        user = Users.objects.create(
+            username = "user_test",
+            password = "pass_test"
+        )
+
+        app1 = Apps.objects.create(
+            name = "App1"
+        )
+
+        app2 = Apps.objects.create(
+            name = "App2"
+        )
+
+        resource1 = Resources.objects.create(
+            name = "Resource1"
+        )
+
+        resource2 = Resources.objects.create(
+            name = "Resource2"
+        )
+
+        user.app.add(app1)
+        resource1.app.add(app1)
+
+        client = Client()
+        response = client.get(reverse("login"), {
+            'username': 'user_test',
+            'password': 'pass_test',
+            'response_type': 'code',
+            'client_id': 1,
+            'resource_id': 1,
+            'redirect_uri': 'http://www.google.com',
+            'state': 'xyz',
+            'scope': 'all',
+        })
+        self.assertEquals(response.status_code, 302)
+        
+        response = client.get(reverse("authorize"), {
+            'response_type': 'code',
+            'client_id': 1,
+            'resource_id': 1,
+            'redirect_uri': 'http://www.google.com',
+            'state': 'xyz',
+            'scope': 'all',
+            'granted': 'yes',
+        })
+
+        self.assertEquals(response.status_code, 302)
+
+        code = parse_qs(urlparse(response.url).query)['code']
+        state = parse_qs(urlparse(response.url).query)['state']
+
+        response = client.get(reverse("token"), {
+            'client_id': 1,
+            'app_secret': '1029384756',
+            'code': code,
+        })
+
 
 class TestModels(TestCase):
     

@@ -125,11 +125,22 @@ def authorize(request):
         })
     
 def token(request, client_id, app_secret, code):
-    token = jwt.encode({
-        'client_id': client_id,
-        'user_id': 1,
-    }, 'secret_token', algorithm='HS256')
- 
+    try:
+        code_content = jwt.decode(code, 'secret_code', algorithms=['HS256'])
+        app = Apps.objects.get(id = client_id, secret = app_secret)
+        token = jwt.encode({
+            'client_id': client_id,
+            'user_id': code_content['user_id'],
+        }, 'secret_token', algorithm='HS256')
+    except jwt.exceptions.InvalidSignatureError:
+        return render(request, "error.html", {
+            "error": "Wrong code"
+        })
+    except Apps.DoesNotExist:
+        return render(request, "error.html", {
+            "error": "Wrong app"
+        })
+
     return JsonResponse({
         "token": token
     })

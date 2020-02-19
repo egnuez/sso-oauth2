@@ -37,6 +37,10 @@ cursor: pointer;
 color: white;
 }
 
+.card-header h4{
+color: white;
+}    
+
 .social_icon{
 position: absolute;
 right: 20px;
