@@ -124,23 +124,21 @@ def authorize(request):
             "error": "El Recurso solicitado no existe"
         })
     
-def token(request, client_id, app_secret, code):
+def token(request):
     try:
-        code_content = jwt.decode(code, 'secret_code', algorithms=['HS256'])
-        app = Apps.objects.get(id = client_id, secret = app_secret)
+        code_content = jwt.decode(request.GET['code'], 'secret_code', algorithms=['HS256'])
+        app = Apps.objects.get(id = request.GET['client_id'], secret = request.GET['app_secret'])
         token = jwt.encode({
-            'client_id': client_id,
+            'client_id': request.GET['client_id'],
             'user_id': code_content['user_id'],
         }, 'secret_token', algorithm='HS256')
     except jwt.exceptions.InvalidSignatureError:
-        return render(request, "error.html", {
-            "error": "Wrong code"
-        })
+        return HttpResponse('Invalid Signature', status=403)
+    except jwt.exceptions.ExpiredSignatureError:
+        return HttpResponse('Expired Signature', status=403)
     except Apps.DoesNotExist:
-        return render(request, "error.html", {
-            "error": "Wrong app"
-        })
+        return HttpResponse('App does not exists', status=403)
 
     return JsonResponse({
-        "token": token
+        "token": token.decode('utf-8')
     })

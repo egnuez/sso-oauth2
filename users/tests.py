@@ -3,6 +3,7 @@ from django.urls import resolve, reverse
 from users.views import login, logout, authorize, token
 from users.models import Users, Apps, Resources
 from urllib.parse import urlparse, parse_qs
+import json
 
 # Create your tests here.
 
@@ -170,7 +171,8 @@ class TestViews(TestCase):
         )
 
         app1 = Apps.objects.create(
-            name = "App1"
+            name = "App1",
+            secret = "1029384756"
         )
 
         app2 = Apps.objects.create(
@@ -213,8 +215,10 @@ class TestViews(TestCase):
 
         self.assertEquals(response.status_code, 302)
 
-        code = parse_qs(urlparse(response.url).query)['code']
-        state = parse_qs(urlparse(response.url).query)['state']
+        code = parse_qs(urlparse(response.url).query)['code'][0]
+        state = parse_qs(urlparse(response.url).query)['state'][0]
+
+        self.assertEquals(state, "xyz")
 
         response = client.get(reverse("token"), {
             'client_id': 1,
@@ -222,6 +226,7 @@ class TestViews(TestCase):
             'code': code,
         })
 
+        self.assertEqual(response.status_code, 200)
 
 class TestModels(TestCase):
     
