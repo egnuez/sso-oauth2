@@ -5,6 +5,13 @@ The project constist of 3 apps:
 
 This application has a users database and a login form to validate them. It implements oAuth2 server service auth:
 
+
+
+###  Code Flow
+
+![code flow](doc/code_flow.png "Code Flow")
+
+
 **Ask for permissions using "code"**
 
 ```
