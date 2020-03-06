@@ -2,6 +2,8 @@ from django.shortcuts import render
 from urllib import request as urlrequest
 from urllib import parse
 import json
+import jwt
+import base64
 
 # Create your views here.
 
@@ -24,8 +26,12 @@ def auth_landing_page(request):
 
     with urlrequest.urlopen(full_url) as response:
         data = json.loads(response.read())
+        token = data["token"]
+        token_info = data["token"].split(".")[1]
+        token_info = json.loads(base64.b64decode( token_info + "=" * ((4 - len(token_info) % 4) % 4) ))
         return render(request, "app1_auth_landing_page.html", { 
-            "code": code, 
-            "state": state,
+            "resource_id":token_info["resource_id"],
+            "user_id":token_info["user_id"],
+            "client_id":token_info["client_id"],
             "token": data["token"],
         })

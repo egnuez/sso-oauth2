@@ -77,6 +77,7 @@ def authorize(request):
             'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=30),
             'client_id': client_id,
             'user_id': 1,
+            "resource_id": resource_id,
         }, 'secret_code', algorithm='HS256')
         url = "{}/?code={}&state={}".format(redirect_uri, code.decode('ascii'), state) 
         return redirect(url)
@@ -131,6 +132,7 @@ def token(request):
         token = jwt.encode({
             'client_id': request.GET['client_id'],
             'user_id': code_content['user_id'],
+            'resource_id': code_content['resource_id'],
         }, 'secret_token', algorithm='HS256')
     except jwt.exceptions.InvalidSignatureError:
         return HttpResponse('Invalid Signature', status=403)
